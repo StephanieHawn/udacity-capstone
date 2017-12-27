@@ -213,6 +213,14 @@ public enum ovrAvatarMaterialMaskType{
 	Count
 };
 
+// This needs to be the csharp equivalent of Controller Types from OVR_Avatar.h
+public enum ovrAvatarControllerType
+{
+	Touch,
+	Malibu, 
+	Count,
+};
+
 // This needs to be the csharp equivalent of ovrAvatarMaterialLayerState in OVR_Avatar.h
 public struct ovrAvatarMaterialLayerState{
 	public ovrAvatarMaterialLayerBlendMode  blendMode;
@@ -340,9 +348,9 @@ public struct ovrAvatarMaterialState{
     }
 };
 
-public class OvrMaterialWrapper : OvrAvatarAsset
+public class OvrAvatarAssetMaterial : OvrAvatarAsset
 {
-    public OvrMaterialWrapper(UInt64 id, IntPtr mat) 
+    public OvrAvatarAssetMaterial(UInt64 id, IntPtr mat) 
     {
         assetID = id;
         material = CAPI.ovrAvatarAsset_GetMaterialState(mat);
@@ -410,6 +418,15 @@ public enum ovrAvatarHandGesture {
     GripSphere,
     GripCube,
     Count
+};
+
+public enum ovrAvatarBodyPartType
+{
+    Body,
+    Clothing,
+    Eyewear,
+    Hair,
+    Beard
 };
 
 namespace Oculus.Avatar
@@ -496,6 +513,31 @@ namespace Oculus.Avatar
             ovrAvatarHandInputState inputStateRight);
 
         [DllImport(LibFile, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ovrAvatarPose_Update3DofHands(
+            IntPtr avatar,
+            IntPtr inputStateLeft,
+            IntPtr inputStateRight,
+            ovrAvatarControllerType type);
+
+        public static void ovrAvatarPose_UpdateSDK3DofHands(
+            IntPtr avatar,
+            ovrAvatarHandInputState inputStateLeft,
+            ovrAvatarHandInputState inputStateRight,
+            ovrAvatarControllerType type)
+        {
+            System.IntPtr leftPtr = Marshal.AllocHGlobal(Marshal.SizeOf(inputStateLeft));
+            System.IntPtr rightPtr = Marshal.AllocHGlobal(Marshal.SizeOf(inputStateRight));
+            Marshal.StructureToPtr(inputStateLeft, leftPtr, false);
+            Marshal.StructureToPtr(inputStateRight, rightPtr, false);
+
+            ovrAvatar_SetLeftControllerVisibility(avatar, true);
+            ovrAvatar_SetRightControllerVisibility(avatar, true);
+            ovrAvatar_SetLeftHandVisibility(avatar, true);
+            ovrAvatar_SetRightHandVisibility(avatar, true);
+            ovrAvatarPose_Update3DofHands(avatar, leftPtr, rightPtr, type);
+        }
+
+        [DllImport(LibFile, CallingConvention = CallingConvention.Cdecl)]
         public static extern void ovrAvatarPose_Finalize(IntPtr avatar, float elapsedSeconds);
 
         [DllImport(LibFile, CallingConvention = CallingConvention.Cdecl)]
@@ -503,6 +545,12 @@ namespace Oculus.Avatar
 
         [DllImport(LibFile, CallingConvention = CallingConvention.Cdecl)]
         public static extern void ovrAvatar_SetRightControllerVisibility(IntPtr avatar, bool show);
+
+        [DllImport(LibFile, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ovrAvatar_SetLeftHandVisibility(IntPtr avatar, bool show);
+
+        [DllImport(LibFile, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ovrAvatar_SetRightHandVisibility(IntPtr avatar, bool show);
 
         [DllImport(LibFile, CallingConvention = CallingConvention.Cdecl)]
         public static extern UInt32 ovrAvatarComponent_Count(IntPtr avatar);
