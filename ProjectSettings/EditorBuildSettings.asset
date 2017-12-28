@@ -11,6 +11,3 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_scenes/Spaceship.unity
     guid: 74186ae821a52c346b26e5500319d6b1
-  - enabled: 0
-    path: Assets/__DELETED_GUID_Trash/94dcd5d7a06de4444b63c01e4c036469
-    guid: 94dcd5d7a06de4444b63c01e4c036469
