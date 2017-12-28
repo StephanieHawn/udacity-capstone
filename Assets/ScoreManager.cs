@@ -20,7 +20,7 @@ public class ScoreManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (i == 5)
+        if (i >= 5)
         {
             computerChip.SetActive(true);
         }
@@ -28,7 +28,8 @@ public class ScoreManager : MonoBehaviour {
 
     public void BitCollected()
     {
-        i++;
+        //i++;
+        i = i + 1;
         print("i =" + i);
         BitTextCount();
     }
