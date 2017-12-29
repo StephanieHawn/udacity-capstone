@@ -35,7 +35,7 @@ public class Collectable : MonoBehaviour {
         Renderer rend = gameObject.GetComponent<Renderer>();
         rend.enabled = false;
         gameObject.GetComponent<AudioSource>().Play();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
         Destroy(gameObject);
     }
 

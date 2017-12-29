@@ -36,6 +36,6 @@ public class ScoreManager : MonoBehaviour {
 
     public void BitTextCount()
     {
-        countScore.text = "Collected" + i.ToString() + "/5";
+        countScore.text = "Collected " + i.ToString() + "/5 Computer Bits";
     }
 }
